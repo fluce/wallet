@@ -43,6 +43,19 @@ module.service("apiService", function ($http, encodingService, protobufBuilder, 
             });
     }
 
+    this.getInstanceInfo = function (endpoint) {
+        var request = $http({
+            url: endpoint.rootUrl + "info",
+            method: "GET"
+        });
+
+        return request.then(function (result) {
+            return {
+                namespace: ByteBuffer.fromHex(result.data.namespace),
+            };
+        });
+    }
+
     this.getValue = function (endpoint, key, version) {
         if (version)
             var request = $http({

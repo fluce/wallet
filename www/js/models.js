@@ -204,6 +204,8 @@ module.service("TransactionBuilder", function ($q, $rootScope, $location, apiSer
         var _this = this;
 
         this.endpoint = endpoint;
+        this.endpoint.namespace = apiService.getInstanceInfo(endpoint).namespace;
+
         this.records = [];
 
         this.addRecord = function (key, value, version) {
@@ -256,7 +258,7 @@ module.service("TransactionBuilder", function ($q, $rootScope, $location, apiSer
 
         this.submit = function (key) {
             var constructedTransaction = new protobufBuilder.Mutation({
-                "namespace": encodingService.encodeString(_this.endpoint.rootUrl),
+                "namespace": _this.endpoint.namespace,
                 "records": _this.records,
                 "metadata": ByteBuffer.fromHex("")
             });

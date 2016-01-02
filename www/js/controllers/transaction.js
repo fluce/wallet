@@ -40,7 +40,7 @@ module.controller("TransactionInfoController", function ($scope, $rootScope, $ro
 
     function loadEndpoint(key) {
         var endpoint = endpointManager.endpoints[key];
-        
+        endpoint.namespace = apiService.getInstanceInfo(endpoint).namespace;
         apiService.getTransaction(endpoint, mutationHash).then(function (result) {
             if (result == null) {
                 transactions.push({ endpoint: endpoint, success: false });
@@ -50,7 +50,7 @@ module.controller("TransactionInfoController", function ($scope, $rootScope, $ro
                     success: true,
                     mutationHash: result.mutationHash.toHex(),
                     transactionHash: result.transactionHash.toHex(),
-                    namespace: encodingService.decodeString(result.mutation.namespace),
+                    namespace: result.mutation.namespace.toHex(),
                     acc_records: [],
                     data_records: [],
                     endpoint: endpoint,
